@@ -14,15 +14,15 @@ android:clipChildren="false">
 
         <com.gigamole.infinitecycleviewpager.VerticalInfiniteCycleViewPager
             android:id="@+id/vicvp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             app:icvp_center_page_scale_offset="0dp"
-            app:icvp_max_page_scale="0.8"
+            app:icvp_max_page_scale="1"
             app:icvp_medium_scaled="true"
-            app:icvp_min_page_scale="0.6"
-            app:icvp_min_page_scale_offset="0dp"
+            app:icvp_min_page_scale="0.7"
+            app:icvp_min_page_scale_offset="-20dp"
             app:icvp_interpolator="@android:anim/accelerate_decelerate_interpolator"
-            app:icvp_scroll_duration="250"/>
+            app:icvp_scroll_duration="200"/>
 
     </FrameLayout>
 

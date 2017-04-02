@@ -19,9 +19,10 @@ public class PreviewActivity extends Activity {
 
     @BindView(R.id.image)
     ImageView imageView;
+    Bitmap bitmap;
 
-    @OnClick(R.id.scroll)
-    public void scroll(){
+    @OnClick(R.id.next)
+    public void next(){
         Intent intent = new Intent(getApplicationContext(), TwoWayScrollActivity.class);
         startActivity(intent);
     }
@@ -32,7 +33,7 @@ public class PreviewActivity extends Activity {
         setContentView(R.layout.activity_preview);
         ButterKnife.bind(this);
 
-        Bitmap bitmap = ResultHolder.getImage();
+        bitmap = ResultHolder.getImage();
         if (bitmap == null) {
             finish();
             return;
@@ -44,6 +45,5 @@ public class PreviewActivity extends Activity {
         Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 
         imageView.setImageBitmap(rotatedBitmap);
-
     }
 }

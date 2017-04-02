@@ -9,43 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ankur.lahacks.R;
-import com.ankur.lahacks.model.Item;
-import com.ankur.lahacks.utils.Utils;
 import com.gigamole.infinitecycleviewpager.VerticalInfiniteCycleViewPager;
 
 import java.util.List;
 
 public class HorizontalPagerAdapter extends PagerAdapter {
 
-    private final Utils.LibraryObject[] LIBRARIES = new Utils.LibraryObject[]{
-            new Utils.LibraryObject(
-                    R.drawable.a,
-                    "0:00"
-            ),
-            new Utils.LibraryObject(
-                    R.drawable.b,
-                    "0:01"
-            ),
-            new Utils.LibraryObject(
-                    R.drawable.c,
-                    "0:02"
-            ),
-            new Utils.LibraryObject(
-                    R.drawable.d,
-                    "0:03"
-            ),
-            new Utils.LibraryObject(
-                    R.drawable.e,
-                    "0:04"
-            )
-    };
-
-    private List<List<Item>> listItems;
+    private List<List<String>> listItems;
 
     private Context mContext;
     private LayoutInflater mLayoutInflater;
 
-    public HorizontalPagerAdapter(final Context context, List<List<Item>> listItems) {
+    public HorizontalPagerAdapter(final Context context, List<List<String>> listItems) {
         mContext = context;
         mLayoutInflater = LayoutInflater.from(context);
         this.listItems = listItems;

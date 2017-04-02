@@ -5,21 +5,22 @@ import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.ankur.lahacks.R;
-import com.ankur.lahacks.model.Item;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-import static com.ankur.lahacks.utils.Utils.setupItem;
+import static com.ankur.lahacks.R.layout.item;
 
 public class VerticalPagerAdapter extends PagerAdapter {
 
     private LayoutInflater mLayoutInflater;
-    private List<Item> items;
+    private List<String> items;
 
-    public VerticalPagerAdapter(final Context context, List<Item> items) {
+    public VerticalPagerAdapter(final Context context, List<String> items) {
         mLayoutInflater = LayoutInflater.from(context);
         this.items = items;
     }
@@ -37,7 +38,7 @@ public class VerticalPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(final ViewGroup container, final int position) {
-        final View view = mLayoutInflater.inflate(R.layout.item, container, false);
+        final View view = mLayoutInflater.inflate(item, container, false);
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,7 +47,8 @@ public class VerticalPagerAdapter extends PagerAdapter {
             }
         });
 
-        setupItem(view, items.get(position));
+        final ImageView imageView = (android.widget.ImageView) view.findViewById(R.id.image);
+        Glide.with(view.getContext()).load(items.get(position)).into(imageView);
         container.addView(view);
         return view;
     }

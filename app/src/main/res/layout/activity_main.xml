@@ -5,20 +5,20 @@
     android:background="#424242"
     android:clipChildren="false">
 
-
     <com.flurgle.camerakit.CameraView
         android:id="@+id/camera"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:adjustViewBounds="true" />
 
-    <ImageButton
+    <Button
         android:id="@+id/capturePhoto"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:onClick="capturePhoto"
         android:layout_gravity="center|bottom"
-        android:src="@drawable/ic_development"
+        android:background="@drawable/camera_shutter"
+        android:layout_marginBottom="15dp"
         android:layout_margin="10dp"
         android:tint="@android:color/white" />
 
