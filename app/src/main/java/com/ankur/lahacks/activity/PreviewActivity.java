@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
 import com.ankur.lahacks.R;
+import com.ankur.lahacks.model.ResultHolder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,7 +22,7 @@ public class PreviewActivity extends Activity {
 
     @OnClick(R.id.scroll)
     public void scroll(){
-        Intent intent = new Intent(getApplicationContext(), ThumbYogaActivity.class);
+        Intent intent = new Intent(getApplicationContext(), TwoWayScrollActivity.class);
         startActivity(intent);
     }
 

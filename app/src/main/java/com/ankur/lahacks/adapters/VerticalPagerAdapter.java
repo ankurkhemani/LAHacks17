@@ -2,44 +2,32 @@ package com.ankur.lahacks.adapters;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
-import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.ankur.lahacks.R;
-import com.ankur.lahacks.utils.Utils;
+import com.ankur.lahacks.model.Item;
+
+import java.util.List;
 
 import static com.ankur.lahacks.utils.Utils.setupItem;
 
 public class VerticalPagerAdapter extends PagerAdapter {
 
-    private final Utils.LibraryObject[] TWO_WAY_LIBRARIES = new Utils.LibraryObject[]{
-            new Utils.LibraryObject(
-                    R.drawable.f,
-                    "You had me at Hello World"
-            ),
-            new Utils.LibraryObject(
-                    R.drawable.f,
-                    "Fortune favors the brave"
-            ),
-            new Utils.LibraryObject(
-                    R.drawable.f,
-                    "Manners maketh man"
-            )
-    };
-
     private LayoutInflater mLayoutInflater;
+    private List<Item> items;
 
-    public VerticalPagerAdapter(final Context context) {
+    public VerticalPagerAdapter(final Context context, List<Item> items) {
         mLayoutInflater = LayoutInflater.from(context);
+        this.items = items;
     }
 
 
     @Override
     public int getCount() {
-        return TWO_WAY_LIBRARIES.length;
+        return items.size();
     }
 
     @Override
@@ -51,16 +39,14 @@ public class VerticalPagerAdapter extends PagerAdapter {
     public Object instantiateItem(final ViewGroup container, final int position) {
         final View view = mLayoutInflater.inflate(R.layout.item, container, false);
 
-        setupItem(view, TWO_WAY_LIBRARIES[position]);
-
-        final CardView cardView = (CardView) view.findViewById(R.id.cardView);
-        cardView.setOnClickListener(new View.OnClickListener() {
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(view.getContext(), "testing", Toast.LENGTH_SHORT);
             }
         });
 
+        setupItem(view, items.get(position));
         container.addView(view);
         return view;
     }

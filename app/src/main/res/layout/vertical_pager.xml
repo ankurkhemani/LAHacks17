@@ -6,9 +6,9 @@ android:layout_height="match_parent"
 android:background="#424242"
 android:clipChildren="false">
 
-    <com.ankur.lahacks.utils.SquareFrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
         android:layout_gravity="center"
         android:clipChildren="false">
 
@@ -24,13 +24,6 @@ android:clipChildren="false">
             app:icvp_interpolator="@android:anim/accelerate_decelerate_interpolator"
             app:icvp_scroll_duration="250"/>
 
-        <TextView
-            android:id="@+id/time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|bottom"
-            android:textColor="@android:color/white"/>
-
-    </com.ankur.lahacks.utils.SquareFrameLayout>
+    </FrameLayout>
 
 </FrameLayout>

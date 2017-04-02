@@ -2,14 +2,18 @@ package com.ankur.lahacks.adapters;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.ankur.lahacks.R;
+import com.ankur.lahacks.model.Item;
 import com.ankur.lahacks.utils.Utils;
 import com.gigamole.infinitecycleviewpager.VerticalInfiniteCycleViewPager;
+
+import java.util.List;
 
 public class HorizontalPagerAdapter extends PagerAdapter {
 
@@ -36,17 +40,20 @@ public class HorizontalPagerAdapter extends PagerAdapter {
             )
     };
 
+    private List<List<Item>> listItems;
+
     private Context mContext;
     private LayoutInflater mLayoutInflater;
 
-    public HorizontalPagerAdapter(final Context context) {
+    public HorizontalPagerAdapter(final Context context, List<List<Item>> listItems) {
         mContext = context;
         mLayoutInflater = LayoutInflater.from(context);
+        this.listItems = listItems;
     }
 
     @Override
     public int getCount() {
-        return LIBRARIES.length;
+        return listItems.size();
     }
 
     @Override
@@ -59,16 +66,27 @@ public class HorizontalPagerAdapter extends PagerAdapter {
         final View view;
         view = mLayoutInflater.inflate(R.layout.vertical_pager, container, false);
 
-        final TextView time = (TextView) view.findViewById(R.id.time);
-        time.setText(LIBRARIES[position].getTitle());
-
         final VerticalInfiniteCycleViewPager verticalInfiniteCycleViewPager =
                 (VerticalInfiniteCycleViewPager) view.findViewById(R.id.vicvp);
         verticalInfiniteCycleViewPager.setAdapter(
-                new VerticalPagerAdapter(mContext)
+                new VerticalPagerAdapter(mContext, listItems.get(position))
         );
-        verticalInfiniteCycleViewPager.setCurrentItem(position);
+        verticalInfiniteCycleViewPager.setCurrentItem(listItems.get(position).size()/2);
+        verticalInfiniteCycleViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
 
+            @Override
+            public void onPageSelected(int position) {
+                Log.d("position: ", verticalInfiniteCycleViewPager.getRealItem() + "");
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         container.addView(view);
         return view;
     }

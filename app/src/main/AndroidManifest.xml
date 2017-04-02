@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.ankur.lahacks.activity.ThumbYogaActivity"
+        <activity android:name="com.ankur.lahacks.activity.TwoWayScrollActivity"
             android:screenOrientation="portrait" />
 
         <activity
