@@ -13,7 +13,14 @@ public class APIItem {
     @SerializedName("bucket_results")
     List<List<String>> items;
 
+    @SerializedName("quotes")
+    List<String> quotes;
+
     public List<List<String>> getItems() {
         return items;
+    }
+
+    public List<String> getQuotes() {
+        return quotes;
     }
 }

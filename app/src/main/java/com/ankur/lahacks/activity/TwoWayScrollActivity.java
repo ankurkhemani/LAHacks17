@@ -6,12 +6,15 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.ankur.lahacks.R;
 import com.ankur.lahacks.adapters.HorizontalPagerAdapter;
+import com.ankur.lahacks.adapters.QuotesAdapter;
 import com.ankur.lahacks.model.APIItem;
 import com.ankur.lahacks.model.ResultHolder;
 import com.ankur.lahacks.utils.ImageUploadService;
@@ -21,11 +24,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,8 +43,8 @@ public class TwoWayScrollActivity extends AppCompatActivity {
     @BindView(R.id.heading)
     TextView heading;
 
-    @BindView(R.id.text)
-    TextView text;
+//    @BindView(R.id.text)
+//    TextView text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +54,7 @@ public class TwoWayScrollActivity extends AppCompatActivity {
 
         Typeface roboto = Typeface.createFromAsset(getAssets(), "font/Roboto-Medium.ttf");
         heading.setTypeface(roboto);
-        text.setTypeface(roboto);
+//        text.setTypeface(roboto);
 
         Bitmap bitmap = ResultHolder.getImage();
         if (bitmap == null) {
@@ -84,8 +89,15 @@ public class TwoWayScrollActivity extends AppCompatActivity {
     }
 
     private void uploadFile(File file) {
-        ImageUploadService service = new Retrofit.Builder().baseUrl("http://192.168.1.132:5000/")
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                .build();
+
+        ImageUploadService service = new Retrofit.Builder().baseUrl("http://thumbyoga.azurewebsites.net/")
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient)
                 .build().create(ImageUploadService.class);
 
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
@@ -102,11 +114,13 @@ public class TwoWayScrollActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<APIItem> call, Response<APIItem> response) {
                 List<List<String>> items = response.body().getItems();
+                List<String> quotes = response.body().getQuotes();
+
                 Log.d("Upload", "success: " + response.toString());
                 Log.d("Upload", "items: " + items);
                 if (mProgressDialog.isShowing())
                     mProgressDialog.dismiss();
-                setUpView(items);
+                setUpView(items, quotes);
             }
 
             @Override
@@ -121,7 +135,7 @@ public class TwoWayScrollActivity extends AppCompatActivity {
         });
     }
 
-    private void setUpView(final List<List<String>> items){
+    private void setUpView(final List<List<String>> items, final List<String> quotes){
         // create dummy data
 //        final List<List<Item>> listItems = new ArrayList<>();
 //        for (int i = 0; i < 5; i++) {
@@ -135,7 +149,9 @@ public class TwoWayScrollActivity extends AppCompatActivity {
 //        }
 
         heading.setVisibility(View.VISIBLE);
-        text.setVisibility(View.VISIBLE);
+//        text.setVisibility(View.VISIBLE);
+//        if(quotes!=null)
+//            text.setText(quotes.get(0));
 
         final HorizontalInfiniteCycleViewPager horizontalInfiniteCycleViewPager =
                 (HorizontalInfiniteCycleViewPager) findViewById(R.id.hicvp);
@@ -152,9 +168,9 @@ public class TwoWayScrollActivity extends AppCompatActivity {
                 final int hzPosition = horizontalInfiniteCycleViewPager.getRealItem();
                 int size = items.size();
                 if (hzPosition != size - 1)
-                    heading.setText(String.format("Photos Clicked %d s ago", size - hzPosition - 1));
+                    heading.setText(String.format("Photos clicked %d s ago", size - hzPosition - 1));
                 else {
-                    heading.setText("Photos Clicked In Time .. ");
+                    heading.setText("Photos clicked now");
                 }
             }
 
@@ -163,5 +179,29 @@ public class TwoWayScrollActivity extends AppCompatActivity {
 
             }
         });
+
+        final RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+
+        // Specify a layout for RecyclerView
+        // Create a horizontal RecyclerView
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(
+                this,
+                LinearLayoutManager.HORIZONTAL,
+                false
+        );
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+
+//        dummy_quotes.add("You had me at Hello World!");
+//        dummy_quotes.add("If you are born poor it's not your fault, but if your die poor it's your fault");
+
+
+        // Initialize a new Adapter for RecyclerView
+        if(quotes!=null) {
+            QuotesAdapter quotesAdapter = new QuotesAdapter(this, quotes);
+
+            // Set an adapter for RecyclerView
+            mRecyclerView.setAdapter(quotesAdapter);
+        }
     }
 }
